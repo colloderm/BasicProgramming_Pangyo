@@ -21,7 +21,7 @@ int main(int argc, char* argv[])
     
     char C = 'A';
     
-    char szString[] = "Hello"; // "Hello" 문자열 리터럴
+    char szString[] = "힘과체력"; // "Hello" 문자열 리터럴
     printf("szString = %s\n", szString);
     
     bool Boolean = true; // true(참): 1, false(거짓): 0
