@@ -1,5 +1,10 @@
 #include <stdio.h>
 #include "Player.h"
+#define MAX_COUNT 5
+#define SAFE_DELETE(p) if (p) { delete p; p = nullptr; }
+#define SAFE_DELETE_ARRAY(p) if (p) { delete[] p; p = nullptr; }
+#define SAFE_DELETE_AND_PRINT(p) \
+    { SAFE_DELETE(p) } { printf("메모리 해제 완료"); }
 
 int main()
 {
@@ -43,6 +48,43 @@ int main()
     printf("현재 레벨   : %d\n", player.Level);
     // %.1f는 소수점 첫째 자리까지만 출력하라는 포맷 지정자입니다.
     printf("현재 체력   : %.1f\n", player.HP);
+    
+    printf("[동적 할당 기초 테스트]\n\n");
+
+    // ---------------------------------------------------------
+    // 1. 단일 변수 동적 할당
+    // ---------------------------------------------------------
+    // 힙(Heap) 영역에 int 크기(4바이트)의 메모리를 할당받습니다.
+    int* singlePtr = new int; 
+    *singlePtr = 100; // 할당받은 공간에 100 저장
+
+    printf("동적 할당된 단일 값: %d\n", *singlePtr);
+
+    // ---------------------------------------------------------
+    // 2. 배열 동적 할당
+    // ---------------------------------------------------------
+    int size = 3; 
+    // 변수(size)를 배열의 크기로 사용할 수 있습니다. (정적 배열에서는 불가능한 기능)
+    int* arrPtr = new int[size]; 
+
+    // 배열 값 세팅 및 출력
+    for (int i = 0; i < size; ++i)
+    {
+        arrPtr[i] = (i + 1) * 10;
+        printf("동적 할당된 배열 [%d] : %d\n", i, arrPtr[i]);
+    }
+
+    // ---------------------------------------------------------
+    // 3. 메모리 해제 (실무에서 가장 중요한 부분)
+    // ---------------------------------------------------------
+    SAFE_DELETE_AND_PRINT(singlePtr)
+    // SAFE_DELETE(singlePtr);
+    // delete singlePtr; // 단일 객체는 delete 로 해제
+    // singlePtr = nullptr; // 해제 후에는 안전을 위해 널 포인터로 초기화하는 습관이 좋습니다. ( dangling pointer 방지 )
+
+    SAFE_DELETE_ARRAY(arrPtr)
+    // delete[] arrPtr;  // 배열 형태로 묶여서 할당된 메모리는 반드시 delete[] 로 해제해야 합니다.
+    // arrPtr = nullptr;
 
     return 0;
 }
